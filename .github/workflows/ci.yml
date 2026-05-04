@@ -13,11 +13,8 @@ jobs:
       max-parallel: 1
       fail-fast: false
       matrix:
-        version: ["7.4", "8.0", "8.1", "8.2", "8.3"]
-        variant: ["mysql-nginx", "mysql-nginx-ioncube"]
-        exclude:
-        - version: "8.0"
-          variant: "mysql-nginx-ioncube"
+        version: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
+        variant: ["fpm"]
     name: ${{ matrix.version }} ${{ matrix.variant }}
     permissions:
       contents: read
@@ -39,7 +36,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          file: docker/${{ matrix.version }}-${{ matrix.variant }}.Dockerfile
+          file: ./${{ matrix.version }}-${{ matrix.variant }}.Dockerfile
           context: .
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.version }}-${{ matrix.variant }}
