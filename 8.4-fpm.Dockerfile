@@ -26,7 +26,7 @@ RUN --mount=type=bind,source=.docker,target=/mnt apt update && \
     rm -rf /tmp/ioncube && \
     apt remove -y cron && \
     rm -rf /etc/cron* && \
-    { echo '*/5 * * * * php /var/www/html/crons/cron.php'; echo '*/5 * * * * php /var/www/html/crons/pop.php'; } > /etc/crontab && \
+    echo > /etc/crontab && \
     cd /tmp && \
     curl -fsSL https://github.com/aptible/supercronic/releases/latest/download/supercronic-linux-amd64 \
     -o /usr/local/bin/supercronic \
