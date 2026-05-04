@@ -5,7 +5,7 @@ ENV PATH="/var/www/vendor/bin:$PATH"
 CMD ["/usr/bin/supervisord"]
 
 RUN --mount=type=bind,source=.docker,target=/mnt apt update && \
-    apt install -y nginx supervisor wget nano cron && \
+    apt install -y nginx supervisor wget nano && \
     apt install -y libgmpxx4ldbl libgmp-dev libicu-dev libxml2 libxml2-dev libzip4 libzip-dev libfreetype6 libfreetype6-dev libjpeg62-turbo libjpeg62-turbo-dev libpng-tools libpng16-16 libpng-dev libbz2-dev bzip2 && \
     docker-php-ext-install bcmath opcache mysqli pdo_mysql gmp intl zip sockets bz2 pcntl soap gd && \
     apt remove libgmp-dev libxml2-dev libzip-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev libbz2-dev -y && \

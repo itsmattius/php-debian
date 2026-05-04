@@ -4,12 +4,13 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PATH="/var/www/vendor/bin:$PATH"
 CMD ["/usr/bin/supervisord"]
 
-RUN --mount=type=bind,source=.docker,target=/mnt apt update && \
-    apt install -y nginx supervisor wget nano cron && \
-    apt install -y libgmpxx4ldbl libgmp-dev libicu-dev libxml2 libxml2-dev libzip4 libzip-dev libfreetype6 libfreetype6-dev libjpeg62-turbo libjpeg62-turbo-dev libpng-tools libpng16-16 libpng-dev libbz2-dev bzip2 && \
-    docker-php-ext-install bcmath opcache mysqli pdo_mysql gmp intl zip sockets bz2 pcntl soap gd && \
+RUN --mount=type=bind,source=.docker,target=/mnt apt update && apt install -y \
+    $PHPIZE_DEPS nginx supervisor wget nano libgmp-dev libicu-dev libxml2-dev \
+    libzip-dev zlib1g-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev libbz2-dev bzip2 && \
+    docker-php-ext-configure gd --with-freetype --with-jpeg && \
+    docker-php-ext-install bcmath mysqli pdo_mysql gmp intl zip sockets bz2 pcntl soap gd && \
     apt remove libgmp-dev libxml2-dev libzip-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev libbz2-dev -y && \
-    pecl install redis-6.0.2 && \
+    printf "\n" | pecl install redis && \
     docker-php-ext-enable redis && \
     curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer && \
     mkdir -p /run/php && \
